@@ -3,8 +3,8 @@ import type { RecordRow } from '../../types';
 import { Box, Field, Image, Input, Spinner, Stack } from '@chakra-ui/react';
 import { Tooltip } from '@/components/ui/tooltip';
 import AddressClock from '../AddressClock';
+import styles from './AddressRow.module.css';
 
-import './AddressRow.css';
 import { useAddressValidator } from './useAddressValidator';
 
 interface Props {
@@ -33,9 +33,9 @@ const AddressRow: React.FC<Props> = ({ row, fetchAddress }) => {
   );
 
   return (
-    <li className="list-item">
+    <li className={styles.listItem}>
       <Stack direction="row" alignItems="flex-start">
-        <Box className="list-item-marker">{row.id}</Box>
+        <Box className={styles.listItemMarker}>{row.id}</Box>
 
         <Field.Root flex={'1 1 70%'} invalid={Boolean(errorMessage)}>
           <Input disabled={row.loading} type="text" placeholder="0.0.0.0" onBlur={handleInputBlur} />

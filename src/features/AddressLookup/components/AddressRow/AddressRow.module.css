@@ -1,8 +1,8 @@
-.list-item {
-  margin: 0.75rem 0;
+.listItem {
+  margin: 1rem 0;
 }
 
-.list-item-marker {
+.listItemMarker {
   display: flex;
   align-items: center;
   justify-content: center;
