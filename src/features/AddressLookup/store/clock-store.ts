@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface ClockStoreState {
-  readonly time: number;
+  readonly date: Date;
   readonly interval: number | null;
   readonly enableInterval: () => void;
   readonly clearInterval: () => void;
@@ -10,14 +10,18 @@ interface ClockStoreState {
 const INTERVAL_MS = 1000;
 
 export const useClockStore = create<ClockStoreState>((set, get) => ({
-  time: Date.now(),
-  interval: null,
+  date: new Date(),
+  interval: setInterval(() => {
+    const date = new Date();
+
+    return set((state) => ({ ...state, date }));
+  }, INTERVAL_MS),
 
   enableInterval: () => {
     const interval = setInterval(() => {
-      const time = Date.now();
+      const date = new Date();
 
-      return set((state) => ({ ...state, time }));
+      return set((state) => ({ ...state, date }));
     }, INTERVAL_MS);
 
     set((state) => ({ ...state, interval }));
