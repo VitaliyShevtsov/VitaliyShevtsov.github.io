@@ -1,10 +1,11 @@
-import { memo, type FocusEventHandler } from 'react';
+import { memo, useCallback, useState, type FocusEventHandler } from 'react';
 import type { RecordRow } from '../../types';
 import { Box, Field, Image, Input, Spinner, Stack } from '@chakra-ui/react';
 import { Tooltip } from '@/components/ui/tooltip';
 import AddressClock from '../AddressClock';
 
 import './AddressRow.css';
+import { useAddressValidator } from './useAddressValidator';
 
 interface Props {
   readonly row: RecordRow;
@@ -12,25 +13,33 @@ interface Props {
 }
 
 const AddressRow: React.FC<Props> = ({ row, fetchAddress }) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleInputBlur: FocusEventHandler<HTMLInputElement> = (event) => {
-    const value = event.target.value.trim();
+  const validate = useAddressValidator();
 
-    if (!value) {
-      return;
-    }
+  const handleInputBlur: FocusEventHandler<HTMLInputElement> = useCallback(
+    (event) => {
+      const value = event.target.value.trim();
+      const { valid, message } = validate(value);
 
-    fetchAddress(value, row.id);
-  };
+      if (valid) {
+        setErrorMessage(null);
+        fetchAddress(value, row.id);
+      } else {
+        setErrorMessage(message!);
+      }
+    },
+    [fetchAddress, row.id, validate]
+  );
 
   return (
     <li className="list-item">
-      <Stack direction="row" alignItems={'center'}>
-        <div className="list-item-marker">{row.id}</div>
+      <Stack direction="row" alignItems="flex-start">
+        <Box className="list-item-marker">{row.id}</Box>
 
-        <Field.Root flex={'1 1 70%'} invalid={false}>
+        <Field.Root flex={'1 1 70%'} invalid={Boolean(errorMessage)}>
           <Input disabled={row.loading} type="text" placeholder="0.0.0.0" onBlur={handleInputBlur} />
-          <Field.ErrorText>This field is required</Field.ErrorText>
+          <Field.ErrorText>{errorMessage}</Field.ErrorText>
         </Field.Root>
 
         <Box flex={'1 1 130px'}>
@@ -38,7 +47,7 @@ const AddressRow: React.FC<Props> = ({ row, fetchAddress }) => {
           {!row.loading && row.record ? (
             <Stack direction="row" alignItems="center">
               <Tooltip content={row.record.country}>
-                <Image height="30px" src={row.record.flag.img} />
+                <Image boxShadow="sm" height="30px" src={row.record.flag.img} />
               </Tooltip>
 
               <AddressClock timezone={row.record.timezone} />

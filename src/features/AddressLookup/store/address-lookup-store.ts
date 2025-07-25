@@ -47,15 +47,13 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
       const isEmptyArray = response.data instanceof Array;
 
       if (isEmptyArray) {
-        console.log('empty');
-
         toaster.warning({
           description: 'IP not found',
           type: 'info',
           closable: true,
         });
 
-        return next({ loading: false });
+        return next({ loading: false, record: null });
       }
 
       return next({ record: response.data, loading: false });

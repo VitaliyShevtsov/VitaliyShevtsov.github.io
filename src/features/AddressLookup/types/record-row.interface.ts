@@ -4,5 +4,5 @@ export interface RecordRow {
   readonly id: number;
   readonly loading: boolean;
   readonly ip?: string;
-  readonly record?: AddressRecord;
+  readonly record?: AddressRecord | null;
 }
