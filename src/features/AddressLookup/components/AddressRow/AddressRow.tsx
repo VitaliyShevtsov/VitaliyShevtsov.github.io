@@ -8,18 +8,25 @@ import styles from './AddressRow.module.css';
 import { useAddressValidator } from './useAddressValidator';
 
 interface Props {
+  readonly rowNum: number;
   readonly row: RecordRow;
   readonly fetchAddress: (ip: string, id: number) => void;
+  readonly clearRow: (id: number) => void;
 }
 
-const AddressRow: React.FC<Props> = ({ row, fetchAddress }) => {
+const AddressRow: React.FC<Props> = ({ rowNum, row, fetchAddress, clearRow }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const validate = useAddressValidator();
 
   const handleInputBlur: FocusEventHandler<HTMLInputElement> = useCallback(
     (event) => {
       const value = event.target.value.trim();
+
+      if (value === row.ip) {
+        return;
+      }
+
+      clearRow(row.id);
       const { valid, message } = validate(value);
 
       if (valid) {
@@ -29,25 +36,27 @@ const AddressRow: React.FC<Props> = ({ row, fetchAddress }) => {
         setErrorMessage(message!);
       }
     },
-    [fetchAddress, row.id, validate]
+    [fetchAddress, validate, clearRow, row.id, row.ip]
   );
 
   return (
     <li className={styles.listItem}>
-      <Stack direction="row" alignItems="flex-start">
-        <Box className={styles.listItemMarker}>{row.id}</Box>
+      <Stack direction="row" alignItems="center" paddingBottom="14px">
+        <Box className={styles.listItemMarker}>{rowNum}</Box>
 
-        <Field.Root flex={'1 1 70%'} invalid={Boolean(errorMessage)}>
+        <Field.Root flex={'1 0 70%'} invalid={Boolean(errorMessage)}>
           <Input disabled={row.loading} type="text" placeholder="0.0.0.0" onBlur={handleInputBlur} />
-          <Field.ErrorText>{errorMessage}</Field.ErrorText>
+          <Field.ErrorText position="absolute" bottom="-20px">
+            {errorMessage}
+          </Field.ErrorText>
         </Field.Root>
 
-        <Box flex={'1 1 130px'}>
+        <Box flex={'0 1 130px'}>
           {row.loading ? <Spinner size="md" /> : null}
           {!row.loading && row.record ? (
             <Stack direction="row" alignItems="center">
-              <Tooltip content={row.record.country}>
-                <Image boxShadow="sm" height="30px" src={row.record.flag.img} />
+              <Tooltip content={`${row.record.city}, ${row.record.country}`}>
+                <Image cursor="pointer" boxShadow="sm" height="30px" src={row.record.flag.img} />
               </Tooltip>
 
               <AddressClock timezone={row.record.timezone} />

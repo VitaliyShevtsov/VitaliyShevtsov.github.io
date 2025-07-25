@@ -3,6 +3,7 @@ import type { AddressRecordTimezone } from './address-record-timezone.interface'
 
 export interface AddressRecord {
   readonly country: string;
+  readonly city: string;
   readonly flag: AddressRecordFlag;
   readonly timezone: AddressRecordTimezone;
 }

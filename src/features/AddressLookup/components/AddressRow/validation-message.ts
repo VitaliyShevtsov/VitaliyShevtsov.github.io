@@ -1,4 +1,4 @@
 export const ValidationMessage = {
-  invalidIP: 'Invalid IP',
+  invalidIP: 'Invalid IP address',
   blankValue: 'Value cannot be blank',
 } as const;

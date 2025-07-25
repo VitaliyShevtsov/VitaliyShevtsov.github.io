@@ -7,6 +7,7 @@ interface AddressLookupStoreState {
   readonly rows: RecordRow[] | null;
   readonly currId: number;
   readonly addBlankRow: () => void;
+  readonly clearRow: (id: number) => void;
   readonly fetchAddress: (ip: string, id: number) => void;
 }
 
@@ -27,9 +28,18 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
     });
   },
 
+  clearRow: (id: number): void => {
+    return set((state) => {
+      return {
+        ...state,
+        rows: state.rows?.map((row): RecordRow => (row.id === id ? { id, loading: false } : row)),
+      };
+    });
+  },
+
   fetchAddress: (ip: string, id: number): void => {
     const params: ResponseParams = {
-      fields: 'country,timezone,flag',
+      fields: 'country,city,timezone,flag',
     };
 
     const next = (partialRecord: Partial<RecordRow> = { loading: false }) => {

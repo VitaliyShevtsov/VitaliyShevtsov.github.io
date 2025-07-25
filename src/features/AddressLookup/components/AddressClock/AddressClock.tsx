@@ -1,7 +1,7 @@
 import type { AddressRecordTimezone } from '../../types';
 import { useClockStore } from '../../store';
-import { useCallback } from 'react';
 import { Text } from '@chakra-ui/react';
+import { useGetLocalTime } from './useGetLocalTime';
 
 interface Props {
   readonly timezone: AddressRecordTimezone;
@@ -9,18 +9,9 @@ interface Props {
 
 const AddressClock: React.FC<Props> = ({ timezone }) => {
   const { date } = useClockStore();
+  const getCurrentTime = useGetLocalTime();
 
-  const getCurrentTime = useCallback(() => {
-    return date.toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: timezone.utc,
-    });
-  }, [timezone, date]);
-
-  return <Text>{getCurrentTime()}</Text>;
+  return <Text>{getCurrentTime(date, timezone)}</Text>;
 };
 
 export default AddressClock;
