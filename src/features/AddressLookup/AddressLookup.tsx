@@ -1,20 +1,33 @@
+import { Button, Heading, Text } from '@chakra-ui/react';
 import AddressRow from './components/AddressRow';
-import { useAddressLookupStore } from './store';
+import { useAddressLookupStore, useClockStore } from './store';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { useEffect } from 'react';
 
 const AddressLookup: React.FC = () => {
   const { rows, addBlankRow, fetchAddress } = useAddressLookupStore();
+  const clockContext = useClockStore();
+
+  useEffect(() => {
+    clockContext.enableInterval();
+
+    return () => clockContext.clearInterval();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
-      <h1>Address Lookup Feature</h1>
-      <p>Enter one or more IP addresses and get their country</p>
-      <button onClick={() => addBlankRow()}>+ Add</button>
+      <Heading size="md">Address Lookup Feature</Heading>
+      <Text>Enter one or more IP addresses and get their country</Text>
+      <Button colorPalette="teal" variant="solid" onClick={() => addBlankRow()}>
+        <AiOutlinePlus /> Add
+      </Button>
       {rows?.length ? (
-        <ol>
+        <ul>
           {rows.map((row) => (
             <AddressRow key={row.id} row={row} fetchAddress={fetchAddress} />
           ))}
-        </ol>
+        </ul>
       ) : null}
     </div>
   );

@@ -1,8 +1,13 @@
-import { memo, useState, type FocusEventHandler } from 'react';
-import type { BlankRow } from '../../types';
+import { memo, useEffect, useState, type FocusEventHandler } from 'react';
+import type { RecordRow } from '../../types';
+import { Field, Image, Input, Spinner, Stack } from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
+import AddressClock from '../AddressClock';
+
+import './AddressRow.css';
 
 interface Props {
-  readonly row: BlankRow;
+  readonly row: RecordRow;
   readonly fetchAddress: (ip: string, id: number) => void;
 }
 
@@ -16,11 +21,33 @@ const AddressRow: React.FC<Props> = ({ row, fetchAddress }) => {
     fetchAddress(value, row.id);
   };
 
+  useEffect(() => {
+    if (row.record) {
+      setLoading(false);
+    }
+  }, [row]);
+
   return (
     <li>
-      <div>{row.id}</div>
-      <input type="text" disabled={loading} placeholder="0.0.0.0" onBlur={handleInputBlur} />
-      {loading ? <span>spinner</span> : null}
+      <Stack direction="row" alignItems={'center'}>
+        <div className="list-item-marker">{row.id}</div>
+
+        <Field.Root invalid={false}>
+          <Input disabled={loading} type="text" placeholder="0.0.0.0" onBlur={handleInputBlur} />
+          <Field.ErrorText>This field is required</Field.ErrorText>
+        </Field.Root>
+
+        {loading ? <Spinner size="sm" /> : null}
+        {!loading && row.record ? (
+          <>
+            <Tooltip content={row.record.country}>
+              <Image height="30px" src={row.record.flag.img} />
+            </Tooltip>
+
+            <AddressClock timezone={row.record.timezone} />
+          </>
+        ) : null}
+      </Stack>
     </li>
   );
 };

@@ -1,0 +1,16 @@
+.list-item-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 20px;
+
+  color: rgb(39, 39, 42);
+  font-weight: 500;
+  font-size: 1rem;
+  background: rgb(228, 228, 231);
+}

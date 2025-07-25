@@ -3,9 +3,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -29,13 +26,6 @@ p {
   margin: 0.5em 0;
 }
 
-ol, ul {
-  padding: 0;
-}
-
-li {
-  list-style: none;
-}
 
 button {
   border-radius: 4px;
