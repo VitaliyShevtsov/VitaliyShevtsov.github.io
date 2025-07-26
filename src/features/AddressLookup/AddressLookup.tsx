@@ -1,11 +1,11 @@
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
-import AddressRow from './components/AddressRow';
+
+import AddressList from './components/AddressList';
 import { useAddressLookupStore } from './store';
 import { AiOutlinePlus } from 'react-icons/ai';
-import styles from './AddressLookup.module.css';
 
 const AddressLookup: React.FC = () => {
-  const { rows, addBlankRow, clearRow, fetchAddress } = useAddressLookupStore();
+  const addBlankRow = useAddressLookupStore((state) => state.addBlankRow);
 
   return (
     <Box>
@@ -17,13 +17,7 @@ const AddressLookup: React.FC = () => {
         </Button>
       </Box>
 
-      {rows?.length ? (
-        <ul className={styles.list}>
-          {rows.map((row, i) => (
-            <AddressRow key={row.id} rowNum={i + 1} row={row} clearRow={clearRow} fetchAddress={fetchAddress} />
-          ))}
-        </ul>
-      ) : null}
+      <AddressList />
     </Box>
   );
 };

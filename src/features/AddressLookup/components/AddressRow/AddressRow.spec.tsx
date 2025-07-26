@@ -1,6 +1,4 @@
 import { componentTestBed } from '@/test';
-
-import { describe, expect, it } from 'vitest';
 import AddressRow from './AddressRow';
 
 describe('<AddressRow />', () => {

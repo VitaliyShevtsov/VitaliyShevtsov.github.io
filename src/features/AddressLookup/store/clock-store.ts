@@ -11,11 +11,7 @@ const INTERVAL_MS = 1000;
 
 export const useClockStore = create<ClockStoreState>((set, get) => ({
   date: new Date(),
-  interval: setInterval(() => {
-    const date = new Date();
-
-    return set((state) => ({ ...state, date }));
-  }, INTERVAL_MS),
+  interval: null,
 
   enableInterval: () => {
     const interval = setInterval(() => {

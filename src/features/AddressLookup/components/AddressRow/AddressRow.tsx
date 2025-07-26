@@ -44,14 +44,14 @@ const AddressRow: React.FC<Props> = ({ rowNum, row, fetchAddress, clearRow }) =>
       <Stack direction="row" alignItems="center" paddingBottom="14px">
         <Box className={styles.listItemMarker}>{rowNum}</Box>
 
-        <Field.Root flex={'1 0 70%'} invalid={Boolean(errorMessage)}>
+        <Field.Root flex={'1 1 70%'} invalid={Boolean(errorMessage)}>
           <Input disabled={row.loading} type="text" placeholder="0.0.0.0" onBlur={handleInputBlur} />
           <Field.ErrorText position="absolute" bottom="-20px">
             {errorMessage}
           </Field.ErrorText>
         </Field.Root>
 
-        <Box flex={'0 1 130px'}>
+        <Box flex={'0 1 110px'}>
           {row.loading ? <Spinner size="md" /> : null}
           {!row.loading && row.record ? (
             <Stack direction="row" alignItems="center">

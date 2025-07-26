@@ -8,7 +8,7 @@ interface Props {
 }
 
 const AddressClock: React.FC<Props> = ({ timezone }) => {
-  const { date } = useClockStore();
+  const date = useClockStore((state) => state.date);
   const getCurrentTime = useGetLocalTime();
 
   return <Text>{getCurrentTime(date, timezone.utc)}</Text>;

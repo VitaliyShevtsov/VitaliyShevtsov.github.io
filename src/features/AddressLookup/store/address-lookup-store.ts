@@ -29,12 +29,10 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
   },
 
   clearRow: (id: number): void => {
-    return set((state) => {
-      return {
-        ...state,
-        rows: state.rows?.map((row): RecordRow => (row.id === id ? { id, loading: false } : row)),
-      };
-    });
+    return set((state) => ({
+      ...state,
+      rows: state.rows?.map((row): RecordRow => (row.id === id ? { id, loading: false } : row)),
+    }));
   },
 
   fetchAddress: (ip: string, id: number): void => {
@@ -42,13 +40,11 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
       fields: 'country,city,timezone,flag',
     };
 
-    const next = (partialRecord: Partial<RecordRow> = { loading: false }) => {
-      return set((state) => {
-        return {
-          ...state,
-          rows: state.rows?.map((row): RecordRow => (row.id === id ? { ...row, ...partialRecord, ip } : row)),
-        };
-      });
+    const next = (partialRecord: Partial<RecordRow>) => {
+      return set((state) => ({
+        ...state,
+        rows: state.rows?.map((row): RecordRow => (row.id === id ? { ...row, ...partialRecord, ip } : row)),
+      }));
     };
 
     next({ loading: true });
