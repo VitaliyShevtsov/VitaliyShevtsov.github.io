@@ -12,7 +12,7 @@ export default mergeConfig(
       coverage: {
         exclude: ['**/index.ts', '**/types/**', ...coverageConfigDefaults.exclude],
       },
-      setupFiles: ['./vitest.setup.ts'],
+      setupFiles: ['./src/test/setup.ts'],
     },
-  }),
+  })
 );
