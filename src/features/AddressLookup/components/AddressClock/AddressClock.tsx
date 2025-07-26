@@ -11,7 +11,7 @@ const AddressClock: React.FC<Props> = ({ timezone }) => {
   const { date } = useClockStore();
   const getCurrentTime = useGetLocalTime();
 
-  return <Text>{getCurrentTime(date, timezone)}</Text>;
+  return <Text>{getCurrentTime(date, timezone.utc)}</Text>;
 };
 
 export default AddressClock;

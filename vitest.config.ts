@@ -10,7 +10,7 @@ export default mergeConfig(
       globals: true,
       css: true,
       coverage: {
-        exclude: ['**/index.ts', '**/types/**', ...coverageConfigDefaults.exclude],
+        exclude: ['**/index.ts', '**/main.tsx', 'src/components/**', '**/types/**', ...coverageConfigDefaults.exclude],
       },
       setupFiles: ['./src/test/setup.ts'],
     },
