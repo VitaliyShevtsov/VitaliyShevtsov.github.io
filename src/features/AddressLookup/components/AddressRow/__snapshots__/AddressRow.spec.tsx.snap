@@ -29,6 +29,7 @@ exports[`<AddressRow /> > should match snapshot 1`] = `
           class="chakra-input css-ee9xfg"
           data-part="input"
           data-scope="field"
+          data-testid="address-input"
           id="«r0»"
           placeholder="0.0.0.0"
           type="text"

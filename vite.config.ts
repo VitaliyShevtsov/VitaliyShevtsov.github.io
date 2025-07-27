@@ -15,4 +15,8 @@ export default defineConfig({
       plugins: [postcssNested],
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1000,
+
+  }
 });

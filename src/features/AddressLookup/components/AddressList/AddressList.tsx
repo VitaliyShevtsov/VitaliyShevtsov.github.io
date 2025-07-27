@@ -2,6 +2,7 @@ import styles from './AddressList.module.css';
 import AddressRow from '../AddressRow';
 import { useAddressLookupStore, useClockStore } from '../../store';
 import { useEffect } from 'react';
+import { DataTestId } from '@/test';
 
 const AddressList: React.FC = () => {
   const rows = useAddressLookupStore((state) => state.rows);
@@ -20,7 +21,7 @@ const AddressList: React.FC = () => {
   return (
     <>
       {rows?.length ? (
-        <ul className={styles.list}>
+        <ul className={styles.list} data-testid={DataTestId.AddressList}>
           {rows.map((row, i) => (
             <AddressRow key={row.id} rowNum={i + 1} row={row} clearRow={clearRow} fetchAddress={fetchAddress} />
           ))}

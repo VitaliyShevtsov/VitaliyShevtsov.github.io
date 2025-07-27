@@ -1,4 +1,6 @@
 export const DataTestId = {
-  LanguageSwitcherMenuButton: 'language-switcher-menu-button',
-  LanguageSwitcherMenuBody: 'language-switcher-menu-body',
+  AddressList: 'address-list',
+  AddressInput: 'address-input',
+  AddressRowSpinner: 'address-row-spinner',
+  AddressInfoStack: 'address-info-stack',
 } as const;

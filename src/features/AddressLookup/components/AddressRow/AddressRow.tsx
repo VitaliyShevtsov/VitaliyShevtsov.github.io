@@ -6,6 +6,7 @@ import AddressClock from '../AddressClock';
 import styles from './AddressRow.module.css';
 
 import { useAddressValidator } from './useAddressValidator';
+import { DataTestId } from '@/test';
 
 interface Props {
   readonly rowNum: number;
@@ -45,16 +46,22 @@ const AddressRow: React.FC<Props> = ({ rowNum, row, fetchAddress, clearRow }) =>
         <Box className={styles.listItemMarker}>{rowNum}</Box>
 
         <Field.Root flex={'1 1 70%'} invalid={Boolean(errorMessage)}>
-          <Input disabled={row.loading} type="text" placeholder="0.0.0.0" onBlur={handleInputBlur} />
+          <Input
+            disabled={row.loading}
+            type="text"
+            placeholder="0.0.0.0"
+            data-testid={DataTestId.AddressInput}
+            onBlur={handleInputBlur}
+          />
           <Field.ErrorText position="absolute" bottom="-20px">
             {errorMessage}
           </Field.ErrorText>
         </Field.Root>
 
         <Box flex={'0 1 110px'}>
-          {row.loading ? <Spinner size="md" /> : null}
+          {row.loading ? <Spinner size="md" data-testid={DataTestId.AddressRowSpinner} /> : null}
           {!row.loading && row.record ? (
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" alignItems="center" data-testid={DataTestId.AddressInfoStack}>
               <Tooltip content={`${row.record.city}, ${row.record.country}`}>
                 <Image cursor="pointer" boxShadow="sm" height="30px" src={row.record.flag.img} />
               </Tooltip>
