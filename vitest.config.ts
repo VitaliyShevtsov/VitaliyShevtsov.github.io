@@ -10,7 +10,14 @@ export default mergeConfig(
       globals: true,
       css: true,
       coverage: {
-        exclude: ['**/index.ts', '**/main.tsx', 'src/components/**', '**/types/**', ...coverageConfigDefaults.exclude],
+        exclude: [
+          '**/index.ts',
+          '**/__mocks__/**',
+          '**/main.tsx',
+          'src/components/ui/**',
+          '**/types/**',
+          ...coverageConfigDefaults.exclude,
+        ],
       },
       setupFiles: ['./src/test/vitest.setup.ts'],
     },

@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 
+vi.mock('zustand');
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({

@@ -25,10 +25,10 @@ class ApiService {
   }
 
   public get<T, P>(url: string, params?: P) {
-    return this.getRequestAsObservable<T>('GET', { url, params });
+    return this.getRequest<T>('GET', { url, params });
   }
 
-  private getRequestAsObservable<T = void>(method: Method, config: AxiosRequestConfig) {
+  private getRequest<T = void>(method: Method, config: AxiosRequestConfig) {
     return this.axiosInstance.request<T>({ ...config, method });
   }
 }

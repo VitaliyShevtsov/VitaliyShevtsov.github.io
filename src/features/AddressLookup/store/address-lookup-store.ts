@@ -28,13 +28,6 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
     });
   },
 
-  clearRow: (id: number): void => {
-    return set((state) => ({
-      ...state,
-      rows: state.rows?.map((row): RecordRow => (row.id === id ? { id, loading: false } : row)),
-    }));
-  },
-
   fetchAddress: (ip: string, id: number): void => {
     const params: ResponseParams = {
       fields: 'country,city,timezone,flag',
@@ -64,5 +57,12 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
 
       return next({ record: response.data, loading: false });
     });
+  },
+
+  clearRow: (id: number): void => {
+    return set((state) => ({
+      ...state,
+      rows: state.rows?.map((row): RecordRow => (row.id === id ? { id, loading: false } : row)),
+    }));
   },
 }));

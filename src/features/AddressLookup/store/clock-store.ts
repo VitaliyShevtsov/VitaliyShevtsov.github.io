@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface ClockStoreState {
+export interface ClockStoreState {
   readonly date: Date;
   readonly interval: number | null;
   readonly enableInterval: () => void;
@@ -28,6 +28,7 @@ export const useClockStore = create<ClockStoreState>((set, get) => ({
 
     if (interval) {
       clearInterval(interval);
+      set((state) => ({ ...state, interval: null }));
     }
   },
 }));
