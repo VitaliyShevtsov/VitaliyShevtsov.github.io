@@ -43,7 +43,7 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
     next({ loading: true });
 
     ApiService.get<AddressRecord, ResponseParams>(ip, params).then((response) => {
-      const isEmptyArray = response.data instanceof Array;
+      const isEmptyArray = response?.data instanceof Array;
 
       if (isEmptyArray) {
         toaster.warning({
@@ -55,7 +55,7 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
         return next({ loading: false, record: null });
       }
 
-      return next({ record: response.data, loading: false });
+      return next({ record: response?.data, loading: false });
     });
   },
 
