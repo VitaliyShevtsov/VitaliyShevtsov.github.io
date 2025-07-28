@@ -2,13 +2,13 @@ import { create } from 'zustand';
 import { ApiService } from '../../../api';
 import type { AddressRecord, RecordRow } from '../types';
 import { toaster } from '@/components/ui/toaster';
+import { generateId } from '../helpers';
 
 interface AddressLookupStoreState {
   readonly rows: RecordRow[] | null;
-  readonly currId: number;
   readonly addBlankRow: () => void;
-  readonly clearRow: (id: number) => void;
-  readonly fetchAddress: (ip: string, id: number) => void;
+  readonly clearRow: (id: string) => void;
+  readonly fetchAddress: (ip: string, id: string) => void;
 }
 
 interface ResponseParams {
@@ -17,18 +17,17 @@ interface ResponseParams {
 
 export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
   rows: null,
-  currId: 1,
 
   addBlankRow: () => {
     return set((state) => {
-      const newRow: RecordRow = { id: state.currId, loading: false };
+      const newRow: RecordRow = { id: generateId(), loading: false };
       const rows: RecordRow[] = !state.rows ? [newRow] : [...state.rows, newRow];
 
-      return { ...state, rows, currId: state.currId + 1 };
+      return { ...state, rows };
     });
   },
 
-  fetchAddress: (ip: string, id: number): void => {
+  fetchAddress: (ip: string, id: string): void => {
     const params: ResponseParams = {
       fields: 'country,city,timezone,flag',
     };
@@ -59,7 +58,7 @@ export const useAddressLookupStore = create<AddressLookupStoreState>((set) => ({
     });
   },
 
-  clearRow: (id: number): void => {
+  clearRow: (id: string): void => {
     return set((state) => ({
       ...state,
       rows: state.rows?.map((row): RecordRow => (row.id === id ? { id, loading: false } : row)),

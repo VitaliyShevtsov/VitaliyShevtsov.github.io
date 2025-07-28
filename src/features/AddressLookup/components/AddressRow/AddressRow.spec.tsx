@@ -4,7 +4,7 @@ import type { RecordRow } from '../../types';
 import { act, fireEvent } from '@testing-library/react';
 
 const getMockedRow = ({
-  id = 1,
+  id = '1',
   loading = false,
   ip = '1.1.1.1',
   record = null,

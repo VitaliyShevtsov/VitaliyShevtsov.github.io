@@ -11,8 +11,8 @@ import { DataTestId } from '@/test';
 interface Props {
   readonly rowNum: number;
   readonly row: RecordRow;
-  readonly fetchAddress: (ip: string, id: number) => void;
-  readonly clearRow: (id: number) => void;
+  readonly fetchAddress: (ip: string, id: string) => void;
+  readonly clearRow: (id: string) => void;
 }
 
 const AddressRow: React.FC<Props> = ({ rowNum, row, fetchAddress, clearRow }) => {

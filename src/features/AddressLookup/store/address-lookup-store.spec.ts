@@ -12,7 +12,6 @@ describe('useAddressLookupStore', () => {
   it('should match initial state', () => {
     const { result } = renderHook(() => useAddressLookupStore());
 
-    expect(result.current.currId).toBe(1);
     expect(result.current.rows).toBe(null);
   });
 
@@ -24,7 +23,6 @@ describe('useAddressLookupStore', () => {
         result.current.addBlankRow();
       });
 
-      expect(result.current.currId).toBe(2);
       expect(result.current.rows).toBeInstanceOf(Array);
     });
 
@@ -67,7 +65,7 @@ describe('useAddressLookupStore', () => {
       expect(rows[0].record).toBeUndefined();
 
       await waitFor(() => {
-        result.current.fetchAddress('0.0.0.0', 1);
+        result.current.fetchAddress('0.0.0.0', rows[0].id);
       });
 
       const rows2 = result.current.rows!;
@@ -85,7 +83,7 @@ describe('useAddressLookupStore', () => {
       expect(rows[0].record).toBeUndefined();
 
       await waitFor(() => {
-        result.current.fetchAddress('0.0.0.0', 1);
+        result.current.fetchAddress('0.0.0.0', rows[0].id);
       });
 
       const rows2 = result.current.rows!;
@@ -103,7 +101,7 @@ describe('useAddressLookupStore', () => {
       });
     });
 
-    it('should clear remove record from a row', async () => {
+    it('should clear record from a row', async () => {
       const { result } = renderHook(() => useAddressLookupStore());
 
       mockedApiService.get.mockReturnValue(Promise.resolve().then(() => ({ data: {} } as AxiosResponse)));
@@ -113,7 +111,7 @@ describe('useAddressLookupStore', () => {
       expect(rows[0].record).toBeUndefined();
 
       await waitFor(() => {
-        result.current.fetchAddress('0.0.0.0', 1);
+        result.current.fetchAddress('0.0.0.0', rows[0].id);
       });
 
       const row1 = result.current.rows![0];
@@ -121,7 +119,7 @@ describe('useAddressLookupStore', () => {
       expect(row1.record).toBeTruthy();
 
       act(() => {
-        result.current.clearRow(1);
+        result.current.clearRow(row1.id);
       });
 
       const row2 = result.current.rows![0];
