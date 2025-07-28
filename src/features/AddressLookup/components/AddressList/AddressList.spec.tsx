@@ -14,7 +14,7 @@ describe('<AddressList />', () => {
   it('should not render list if there is no rows', () => {
     const { queryByTestId } = componentTestBed(<AddressList />);
 
-    expect(queryByTestId(DataTestId.AddressList)).not.toBeInTheDocument()
+    expect(queryByTestId(DataTestId.AddressList)).not.toBeInTheDocument();
   });
 
   it('should render 2 blank rows', () => {

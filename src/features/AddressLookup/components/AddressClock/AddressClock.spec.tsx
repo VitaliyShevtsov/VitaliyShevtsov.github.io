@@ -5,7 +5,7 @@ import type { AddressRecordTimezone } from '../../types';
 vi.mock('../../store', () => {
   return {
     useClockStore: () => {
-      return new Date('2025-07-26T20:00:00+02:00') ;
+      return new Date('2025-07-26T20:00:00+02:00');
     },
   };
 });

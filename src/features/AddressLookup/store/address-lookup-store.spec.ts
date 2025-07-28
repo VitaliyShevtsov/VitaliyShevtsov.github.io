@@ -58,7 +58,7 @@ describe('useAddressLookupStore', () => {
     it('should fetch and set record', async () => {
       const { result } = renderHook(() => useAddressLookupStore());
 
-      mockedApiService.get.mockReturnValue(Promise.resolve().then(() => ({ data: {} } as AxiosResponse)));
+      mockedApiService.get.mockReturnValue(Promise.resolve().then(() => ({ data: {} }) as AxiosResponse));
 
       const rows = result.current.rows!;
 
@@ -76,7 +76,7 @@ describe('useAddressLookupStore', () => {
     it('should not set record if IP not found', async () => {
       const { result } = renderHook(() => useAddressLookupStore());
 
-      mockedApiService.get.mockReturnValue(Promise.resolve().then(() => ({ data: [] } as AxiosResponse)));
+      mockedApiService.get.mockReturnValue(Promise.resolve().then(() => ({ data: [] }) as AxiosResponse));
 
       const rows = result.current.rows!;
 
@@ -104,7 +104,7 @@ describe('useAddressLookupStore', () => {
     it('should clear record from a row', async () => {
       const { result } = renderHook(() => useAddressLookupStore());
 
-      mockedApiService.get.mockReturnValue(Promise.resolve().then(() => ({ data: {} } as AxiosResponse)));
+      mockedApiService.get.mockReturnValue(Promise.resolve().then(() => ({ data: {} }) as AxiosResponse));
 
       const rows = result.current.rows!;
 
