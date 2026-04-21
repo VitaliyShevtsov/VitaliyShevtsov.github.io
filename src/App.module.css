@@ -1,0 +1,14 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  background: #f0ebe3;
+}
+
+.board {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  cursor: crosshair;
+}
