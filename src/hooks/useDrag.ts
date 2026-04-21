@@ -1,9 +1,9 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback } from 'react';
 
 interface UseDragOptions {
   onDragStart: (e: PointerEvent) => void;
-  onDragMove: (dx: number, dy: number, e: PointerEvent) => void;
-  onDragEnd: (e: PointerEvent) => void;
+  onDragMove: (dx: number, dy: number) => void;
+  onDragEnd: (dx: number, dy: number) => void;
 }
 
 interface StartPosition {
@@ -37,24 +37,29 @@ export function useDrag({
         const dx = ev.clientX - startPos.current.x;
         const dy = ev.clientY - startPos.current.y;
 
-        onDragMove(dx, dy, ev);
+        onDragMove(dx, dy);
       };
 
       const onUp = (ev: PointerEvent) => {
-        startPos.current = null;
-
-        target.removeEventListener("pointermove", onMove);
-        target.removeEventListener("pointerup", onUp);
-        target.removeEventListener("pointercancel", onUp);
-
-        if (onDragEnd) {
-          onDragEnd(ev);
+        if (!startPos.current) {
+          return;
         }
+
+        target.removeEventListener('pointermove', onMove);
+        target.removeEventListener('pointerup', onUp);
+        target.removeEventListener('pointercancel', onUp);
+
+        const dx = ev.clientX - startPos.current.x;
+        const dy = ev.clientY - startPos.current.y;
+
+        onDragEnd(dx, dy);
+
+        startPos.current = null;
       };
 
-      target.addEventListener("pointermove", onMove);
-      target.addEventListener("pointerup", onUp);
-      target.addEventListener("pointercancel", onUp);
+      target.addEventListener('pointermove', onMove);
+      target.addEventListener('pointerup', onUp);
+      target.addEventListener('pointercancel', onUp);
     },
 
     [onDragStart, onDragMove, onDragEnd],

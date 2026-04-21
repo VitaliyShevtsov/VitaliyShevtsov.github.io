@@ -32,8 +32,8 @@ export function StickyNote({ note, onMove, onBringToFront, onResize }: Props) {
     onDragMove: (dx, dy) => {
       setLocalCords({ x: note.x + dx, y: note.y + dy });
     },
-    onDragEnd: (e) => {
-      onMove(note.id, e.clientX, e.clientY);
+    onDragEnd: (dx, dy) => {
+      onMove(note.id, note.x + dx, note.y + dy);
     },
   });
 
@@ -46,8 +46,10 @@ export function StickyNote({ note, onMove, onBringToFront, onResize }: Props) {
       const newH = Math.max(NOTE_MIN_HEIGHT, note.height + dy);
       setLocalSize({ width: newW, height: newH });
     },
-    onDragEnd: () => {
-      onResize(note.id, localSize.width, localSize.height);
+    onDragEnd: (dx, dy) => {
+      const newW = Math.max(NOTE_MIN_WIDTH, note.width + dx);
+      const newH = Math.max(NOTE_MIN_HEIGHT, note.height + dy);
+      onResize(note.id, newW, newH);
     },
   });
 
