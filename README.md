@@ -1,73 +1,32 @@
-# React + TypeScript + Vite
+# Sticky notes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Getting started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install        # install dependencies
+npm run dev        # start the dev server (http://localhost:5173)
+npm run build      # type-check and produce a production build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Architecture
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+State management is handled entirely inside the `useNotesStore` hook, which wraps a `useReducer` with a typed `Action` union (`ADD`, `MOVE`, `RESIZE`, `BRING_TO_FRONT`, `REMOVE`).
+Notes are persisted automatically to `localStorage` via `loadNotes` / `saveNotes` utilities, so the store is the single source of truth for the whole application.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Drag interaction is factored out into the generic `useDrag` hook, which records a start position on `pointerdown`, emits relative `dx`/`dy` deltas on every `pointermove`, and commits on `pointerup`.
+Both moving and resizing a note reuse this same hook with different callbacks.
+
+## Implemented features
+
+1. ✅ Create a new note of the specified size at the specified position.
+2. ✅ Change note size by dragging.
+3. ✅ Move a note by dragging.
+4. ✅ Remove a note by dragging it over a predefined "trash" zone.
+5. ❌ Entering/editing note text.
+6. ✅ Moving notes to front (in case of overlapping notes).
+7. ✅ Saving notes to local storage (restoring them on page load).
+8. ✅ Different note colors.
+9. ❌ Saving notes to REST API. Note: you're not required to implement the API, you can mock it, but the mocks should be asynchronous.
+
