@@ -12,3 +12,5 @@ export const NOTE_MIN_WIDTH = 120;
 export const NOTE_MIN_HEIGHT = 80;
 export const NOTE_DEFAULT_WIDTH = 200;
 export const NOTE_DEFAULT_HEIGHT = 180;
+
+export const TRASH_ZONE_ID = 'trash-zone';

@@ -7,7 +7,8 @@ type Action =
   | { type: 'ADD'; payload: Pick<Note, 'x' | 'y' | 'color'> }
   | { type: 'MOVE'; payload: Pick<Note, 'id' | 'x' | 'y'> }
   | { type: 'BRING_TO_FRONT'; payload: string }
-  | { type: 'RESIZE'; payload: Pick<Note, 'id' | 'width' | 'height'> };
+  | { type: 'RESIZE'; payload: Pick<Note, 'id' | 'width' | 'height'> }
+  | { type: 'REMOVE'; payload: string };
 
 let nextZIndex = 1;
 
@@ -51,6 +52,8 @@ function reducer(state: Note[], action: Action): Note[] {
           : note,
       );
     }
+    case 'REMOVE':
+      return state.filter((n) => n.id !== action.payload);
     default:
       return state;
   }
@@ -90,5 +93,9 @@ export function useNotesStore() {
     [],
   );
 
-  return { notes, addNote, moveNote, bringToFront, resizeNote };
+  const removeNote = useCallback((id: string) => {
+    dispatch({ type: 'REMOVE', payload: id });
+  }, []);
+
+  return { notes, addNote, moveNote, bringToFront, resizeNote, removeNote };
 }

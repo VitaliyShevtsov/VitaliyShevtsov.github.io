@@ -12,9 +12,21 @@ interface Props {
   readonly onMove: (id: string, x: number, y: number) => void;
   readonly onBringToFront: (id: string) => void;
   readonly onResize: (id: string, width: number, height: number) => void;
+  readonly onDragStateChange: (
+    id: string,
+    dragging: boolean,
+    pointerX?: number,
+    pointerY?: number,
+  ) => void;
 }
 
-export function StickyNote({ note, onMove, onBringToFront, onResize }: Props) {
+export function StickyNote({
+  note,
+  onMove,
+  onBringToFront,
+  onResize,
+  onDragStateChange,
+}: Props) {
   const colors = NOTE_COLORS[note.color];
   const [localCords, setLocalCords] = useState<LocalCords>({
     x: note.x,
@@ -28,12 +40,14 @@ export function StickyNote({ note, onMove, onBringToFront, onResize }: Props) {
   const moveDrag = useDrag({
     onDragStart: () => {
       onBringToFront(note.id);
+      onDragStateChange(note.id, true);
     },
     onDragMove: (dx, dy) => {
       setLocalCords({ x: note.x + dx, y: note.y + dy });
     },
-    onDragEnd: (dx, dy) => {
+    onDragEnd: (dx, dy, e) => {
       onMove(note.id, note.x + dx, note.y + dy);
+      onDragStateChange(note.id, false, e.clientX, e.clientY);
     },
   });
 

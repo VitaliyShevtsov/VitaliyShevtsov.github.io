@@ -3,7 +3,7 @@ import { useRef, useCallback } from 'react';
 interface UseDragOptions {
   onDragStart: (e: PointerEvent) => void;
   onDragMove: (dx: number, dy: number) => void;
-  onDragEnd: (dx: number, dy: number) => void;
+  onDragEnd: (dx: number, dy: number, e: PointerEvent) => void;
 }
 
 interface StartPosition {
@@ -52,7 +52,7 @@ export function useDrag({
         const dx = ev.clientX - startPos.current.x;
         const dy = ev.clientY - startPos.current.y;
 
-        onDragEnd(dx, dy);
+        onDragEnd(dx, dy, ev);
 
         startPos.current = null;
       };
