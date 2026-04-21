@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import styles from './App.module.css';
 import { useNotesStore } from './hooks';
 import type { NoteColor } from './types';
+import { StickyNote } from './components/StickyNote';
 
 function App() {
   const { notes, addNote } = useNotesStore();
@@ -22,7 +23,7 @@ function App() {
     <div className={styles.app}>
       <div className={styles.board} ref={boardRef} onClick={handleBoardClick}>
         {notes.map((note) => (
-          <div key={note.id}>note</div>
+          <StickyNote key={note.id} note={note} />
         ))}
       </div>
     </div>
