@@ -1,0 +1,47 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  /* z-index: 10000; */
+  flex-shrink: 0;
+}
+
+.toolbarTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-right: 16px;
+}
+
+.toolbarControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbarLabel {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.toolbarColorPicker {
+  display: flex;
+  gap: 6px;
+}
+
+.toolbarColorPickerSwatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid;
+  cursor: pointer;
+}
+
+.toolbarColorPickerSwatch:hover {
+  transform: scale(1.1);
+}

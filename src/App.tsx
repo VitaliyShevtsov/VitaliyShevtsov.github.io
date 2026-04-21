@@ -3,6 +3,7 @@ import styles from './App.module.css';
 import { useNotesStore } from './hooks';
 import type { NoteColor } from './types';
 import { StickyNote } from './components/StickyNote';
+import { Toolbar } from './components/Toolbar';
 
 function App() {
   const { notes, addNote, moveNote, bringToFront, resizeNote } =
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <div className={styles.app}>
+      <Toolbar selectedColor={selectedColor} onColorChange={setSelectedColor} />
       <div className={styles.board} ref={boardRef} onClick={handleBoardClick}>
         {notes.map((note) => (
           <StickyNote
