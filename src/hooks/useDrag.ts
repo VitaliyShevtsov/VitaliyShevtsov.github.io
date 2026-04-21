@@ -3,7 +3,7 @@ import { useRef, useCallback } from "react";
 interface UseDragOptions {
   onDragStart: (e: PointerEvent) => void;
   onDragMove: (dx: number, dy: number, e: PointerEvent) => void;
-  onDragEnd?: (e: PointerEvent) => void;
+  onDragEnd: (e: PointerEvent) => void;
 }
 
 interface StartPosition {

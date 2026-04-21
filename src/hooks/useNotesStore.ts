@@ -5,7 +5,8 @@ import { useCallback, useReducer } from 'react';
 type Action =
   | { type: 'ADD'; payload: Pick<Note, 'x' | 'y' | 'color'> }
   | { type: 'MOVE'; payload: Pick<Note, 'id' | 'x' | 'y'> }
-  | { type: 'BRING_TO_FRONT'; payload: string };
+  | { type: 'BRING_TO_FRONT'; payload: string }
+  | { type: 'RESIZE'; payload: Pick<Note, 'id' | 'width' | 'height'> };
 
 let nextZIndex = 1;
 
@@ -38,6 +39,17 @@ function reducer(state: Note[], action: Action): Note[] {
         note.id === action.payload ? { ...note, zIndex: nextZIndex++ } : note,
       );
     }
+    case 'RESIZE': {
+      return state.map((note) =>
+        note.id === action.payload.id
+          ? {
+              ...note,
+              width: action.payload.width,
+              height: action.payload.height,
+            }
+          : note,
+      );
+    }
     default:
       return state;
   }
@@ -58,5 +70,12 @@ export function useNotesStore() {
     dispatch({ type: 'BRING_TO_FRONT', payload: id });
   }, []);
 
-  return { notes, addNote, moveNote, bringToFront };
+  const resizeNote = useCallback(
+    (id: string, width: number, height: number) => {
+      dispatch({ type: 'RESIZE', payload: { id, width, height } });
+    },
+    [],
+  );
+
+  return { notes, addNote, moveNote, bringToFront, resizeNote };
 }

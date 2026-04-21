@@ -1,20 +1,28 @@
-import { NOTE_COLORS } from '@/constants';
+import { NOTE_COLORS, NOTE_MIN_HEIGHT, NOTE_MIN_WIDTH } from '@/constants';
 import type { Note } from '@/types';
 import styles from './StickyNote.module.css';
 import { useDrag } from '@/hooks';
 import { useState } from 'react';
 
+type LocalCords = Pick<Note, 'x' | 'y'>;
+type LocalSize = Pick<Note, 'width' | 'height'>;
+
 interface Props {
   readonly note: Note;
   readonly onMove: (id: string, x: number, y: number) => void;
   readonly onBringToFront: (id: string) => void;
+  readonly onResize: (id: string, width: number, height: number) => void;
 }
 
-export function StickyNote({ note, onMove, onBringToFront }: Props) {
+export function StickyNote({ note, onMove, onBringToFront, onResize }: Props) {
   const colors = NOTE_COLORS[note.color];
-  const [localCords, setLocalCords] = useState({
+  const [localCords, setLocalCords] = useState<LocalCords>({
     x: note.x,
     y: note.y,
+  });
+  const [localSize, setLocalSize] = useState<LocalSize>({
+    width: note.width,
+    height: note.height,
   });
 
   const moveDrag = useDrag({
@@ -22,10 +30,24 @@ export function StickyNote({ note, onMove, onBringToFront }: Props) {
       onBringToFront(note.id);
     },
     onDragMove: (dx, dy) => {
-      setLocalCords(() => ({ x: note.x + dx, y: note.y + dy }));
+      setLocalCords({ x: note.x + dx, y: note.y + dy });
     },
     onDragEnd: (e) => {
       onMove(note.id, e.clientX, e.clientY);
+    },
+  });
+
+  const resizeDrag = useDrag({
+    onDragStart: () => {
+      onBringToFront(note.id);
+    },
+    onDragMove: (dx, dy) => {
+      const newW = Math.max(NOTE_MIN_WIDTH, note.width + dx);
+      const newH = Math.max(NOTE_MIN_HEIGHT, note.height + dy);
+      setLocalSize({ width: newW, height: newH });
+    },
+    onDragEnd: () => {
+      onResize(note.id, localSize.width, localSize.height);
     },
   });
 
@@ -35,8 +57,8 @@ export function StickyNote({ note, onMove, onBringToFront }: Props) {
       style={{
         left: localCords.x,
         top: localCords.y,
-        width: note.width,
-        height: note.height,
+        width: localSize.width,
+        height: localSize.height,
         zIndex: note.zIndex,
         backgroundColor: colors.bg,
         borderColor: colors.border,
@@ -44,6 +66,8 @@ export function StickyNote({ note, onMove, onBringToFront }: Props) {
     >
       <div className={styles.noteHeader} onPointerDown={moveDrag}></div>
       <div>{note.text || 'New note'}</div>
+
+      <div className={styles.noteResizeHandle} onPointerDown={resizeDrag} />
     </div>
   );
 }

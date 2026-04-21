@@ -1,11 +1,12 @@
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './App.module.css';
 import { useNotesStore } from './hooks';
 import type { NoteColor } from './types';
 import { StickyNote } from './components/StickyNote';
 
 function App() {
-  const { notes, addNote, moveNote, bringToFront } = useNotesStore();
+  const { notes, addNote, moveNote, bringToFront, resizeNote } =
+    useNotesStore();
   const [selectedColor, setSelectedColor] = useState<NoteColor>('yellow');
   const boardRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +30,7 @@ function App() {
             note={note}
             onMove={moveNote}
             onBringToFront={bringToFront}
+            onResize={resizeNote}
           />
         ))}
       </div>
