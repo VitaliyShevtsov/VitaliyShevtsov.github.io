@@ -1,6 +1,7 @@
 import { NOTE_DEFAULT_HEIGHT, NOTE_DEFAULT_WIDTH } from '@/constants';
 import type { Note, NoteColor } from '@/types';
-import { useCallback, useReducer } from 'react';
+import { loadNotes, saveNotes } from '@/utils';
+import { useCallback, useEffect, useReducer } from 'react';
 
 type Action =
   | { type: 'ADD'; payload: Pick<Note, 'x' | 'y' | 'color'> }
@@ -56,7 +57,19 @@ function reducer(state: Note[], action: Action): Note[] {
 }
 
 export function useNotesStore() {
-  const [notes, dispatch] = useReducer(reducer, []);
+  const [notes, dispatch] = useReducer(reducer, [], () => {
+    const loadedNotes = loadNotes();
+    if (loadedNotes.length > 0) {
+      const maxIndex = Math.max(...loadedNotes.map((n) => n.zIndex));
+
+      nextZIndex = maxIndex + 1;
+    }
+    return loadedNotes;
+  });
+
+  useEffect(() => {
+    saveNotes(notes);
+  }, [notes]);
 
   const addNote = useCallback((x: number, y: number, color: NoteColor) => {
     dispatch({ type: 'ADD', payload: { x, y, color } });
