@@ -2,6 +2,8 @@
 
 Built with React, TypeScript, and Vite.
 
+Deployed app: [https://vitaliyshevtsov.github.io/](https://vitaliyshevtsov.github.io/)
+
 ## Getting started
 
 ```bash
